@@ -8,10 +8,29 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MovieController extends AbstractController
 {
-    #[Route('/movie', name: 'app_movie')]
-    public function index(): Response
+    #[Route(
+        path: '/movies',
+        name: 'app_movie_list',
+        methods: ['GET']
+    )]
+    public function list(): Response
     {
-        return $this->render('movie/index.html.twig', [
+        return $this->render('movie/list.html.twig', [
+            'controller_name' => 'MovieController',
+        ]);
+    }
+
+    #[Route(
+        path: '/movies/{slug}',
+        name: 'app_movie_details',
+        requirements: [
+            'slug' => '\d{4}-\w+(-\w+)*'
+        ],
+        methods: ['GET']
+    )]
+    public function details(string $slug): Response
+    {
+        return $this->render('movie/list.html.twig', [
             'controller_name' => 'MovieController',
         ]);
     }
