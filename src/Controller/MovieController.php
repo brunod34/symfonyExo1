@@ -16,7 +16,7 @@ class MovieController extends AbstractController
     public function list(): Response
     {
         return $this->render('movie/list.html.twig', [
-            'controller_name' => 'MovieController',
+            'movies' => [],
         ]);
     }
 
@@ -31,7 +31,7 @@ class MovieController extends AbstractController
     public function details(string $slug): Response
     {
         return $this->render('movie/list.html.twig', [
-            'controller_name' => 'MovieController',
+            'movie' => [],
         ]);
     }
 }
