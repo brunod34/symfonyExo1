@@ -15,5 +15,14 @@ Install
 
 ```bash
 $ symfony composer install
-$ symfony serve -d 
+$ yarn install
+$ yarn dev
+$ symfony serve -d
+```
+
+Running the tests
+=================
+
+```bash
+$ symfony php ./bin/phpunit --testdox
 ```
