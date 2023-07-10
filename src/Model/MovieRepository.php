@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use DateTimeImmutable;
+use function array_column;
+use function array_map;
+
 /**
  * @phpstan-type MovieRaw array{
  *     slug: string,
@@ -27,4 +31,33 @@ final class MovieRepository
             'genres' => ['Biopic', 'Drame'],
         ]
     ];
+
+    /**
+     * @param array&MovieRaw $raw
+     */
+    private function hydrate(array $raw): Movie
+    {
+        return new Movie(
+            slug: $raw['slug'],
+            title: $raw['title'],
+            plot: $raw['plot'],
+            releasedAt: new DateTimeImmutable($raw['releasedAt']),
+            genres: $raw['genres'],
+        );
+    }
+
+    public function getBySlug(string $slug): Movie
+    {
+        $indexedBySlug = array_column(self::MOVIES, null, 'slug');
+
+        return $this->hydrate($indexedBySlug[$slug]);
+    }
+
+    /**
+     * @return list<Movie>
+     */
+    public function listAll(): array
+    {
+        return array_map($this->hydrate(...), self::MOVIES);
+    }
 }

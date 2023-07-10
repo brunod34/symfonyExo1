@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\MovieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,10 +14,10 @@ class MovieController extends AbstractController
         name: 'app_movie_list',
         methods: ['GET']
     )]
-    public function list(): Response
+    public function list(MovieRepository $movieRepository): Response
     {
         return $this->render('movie/list.html.twig', [
-            'movies' => [],
+            'movies' => $movieRepository->listAll(),
         ]);
     }
 
@@ -28,10 +29,10 @@ class MovieController extends AbstractController
         ],
         methods: ['GET']
     )]
-    public function details(string $slug): Response
+    public function details(MovieRepository $movieRepository, string $slug): Response
     {
-        return $this->render('movie/list.html.twig', [
-            'movie' => [],
+        return $this->render('movie/details.html.twig', [
+            'movie' => $movieRepository->getBySlug($slug),
         ]);
     }
 }
