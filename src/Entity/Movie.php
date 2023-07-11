@@ -10,9 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: MovieRepository::class)]
-#[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
 #[UniqueEntity('slug')]
+#[ORM\Entity(repositoryClass: MovieRepository::class)]
+#[ORM\UniqueConstraint(name: 'UNIQUE_IDX_MOVIE_SLUG', fields: ['slug'])]
+#[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
 class Movie
 {
     public const SLUG_FORMAT = '\d{4}-\w+(-\w+)*';
