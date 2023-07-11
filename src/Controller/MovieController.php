@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Model\MovieRepository;
+use App\Model\Movie;
+use App\Repository\MovieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,8 +17,10 @@ class MovieController extends AbstractController
     )]
     public function list(MovieRepository $movieRepository): Response
     {
+        $movies = Movie::fromEntities($movieRepository->findAll());
+
         return $this->render('movie/list.html.twig', [
-            'movies' => $movieRepository->listAll(),
+            'movies' => $movies,
         ]);
     }
 
@@ -31,8 +34,10 @@ class MovieController extends AbstractController
     )]
     public function details(MovieRepository $movieRepository, string $slug): Response
     {
+        $movie = Movie::fromEntity($movieRepository->findOneBy(['slug' => $slug]));
+
         return $this->render('movie/details.html.twig', [
-            'movie' => $movieRepository->getBySlug($slug),
+            'movie' => $movie,
         ]);
     }
 }
