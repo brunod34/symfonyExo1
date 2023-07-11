@@ -17,7 +17,7 @@ class MovieController extends AbstractController
     )]
     public function list(MovieRepository $movieRepository): Response
     {
-        $movies = Movie::fromEntities($movieRepository->findAll());
+        $movies = Movie::fromEntities($movieRepository->listAll());
 
         return $this->render('movie/list.html.twig', [
             'movies' => $movies,
@@ -34,7 +34,7 @@ class MovieController extends AbstractController
     )]
     public function details(MovieRepository $movieRepository, string $slug): Response
     {
-        $movie = Movie::fromEntity($movieRepository->findOneBy(['slug' => $slug]));
+        $movie = Movie::fromEntity($movieRepository->getBySlug($slug));
 
         return $this->render('movie/details.html.twig', [
             'movie' => $movie,
