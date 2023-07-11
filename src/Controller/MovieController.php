@@ -7,6 +7,7 @@ use App\Form\MovieType;
 use App\Model\Movie;
 use App\Repository\MovieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -46,7 +47,7 @@ class MovieController extends AbstractController
     #[Route(
         path: '/movies/new',
         name: 'app_movie_new',
-        methods: ['GET']
+        methods: ['GET', 'POST']
     )]
     #[Route(
         path: '/movies/{slug}/edit',
@@ -54,9 +55,9 @@ class MovieController extends AbstractController
         requirements: [
             'slug' => MovieEntity::SLUG_FORMAT,
         ],
-        methods: ['GET']
+        methods: ['GET', 'POST']
     )]
-    public function newOrEdit(MovieRepository $movieRepository, string|null $slug = null): Response
+    public function newOrEdit(Request $request, MovieRepository $movieRepository, string|null $slug = null): Response
     {
         $movieEntity = new MovieEntity();
         if (null !== $slug) {
@@ -64,6 +65,13 @@ class MovieController extends AbstractController
         }
 
         $movieForm = $this->createForm(MovieType::class, $movieEntity);
+        $movieForm->handleRequest($request);
+
+        if ($movieForm->isSubmitted() && $movieForm->isValid()) {
+            $movieRepository->save($movieEntity, true);
+
+            return $this->redirectToRoute('app_movie_details', ['slug' => $movieEntity->getSlug()]);
+        }
 
         return $this->render('movie/new_or_edit.html.twig', [
             'movie_form' => $movieForm,
