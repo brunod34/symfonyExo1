@@ -7,9 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[ORM\ChangeTrackingPolicy('DEFERRED_EXPLICIT')]
+#[UniqueEntity('slug')]
 class Movie
 {
     public const SLUG_FORMAT = '\d{4}-\w+(-\w+)*';
@@ -19,21 +22,32 @@ class Movie
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank()]
+    #[Assert\Regex('#'.self::SLUG_FORMAT.'#')]
+    #[Assert\Length(min: 8, max: 255)]
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 3, max: 255)]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 20)]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $plot = null;
 
+    #[Assert\NotBlank()]
+    #[Assert\LessThanOrEqual('+100 years')]
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $releasedAt = null;
 
+    #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $poster = null;
 
+    #[Assert\Count(min: 1)]
     #[ORM\ManyToMany(targetEntity: Genre::class, inversedBy: 'movies')]
     private Collection $genres;
 
@@ -52,7 +66,7 @@ class Movie
         return $this->slug;
     }
 
-    public function setSlug(string $slug): static
+    public function setSlug(string|null $slug): static
     {
         $this->slug = $slug;
 
@@ -64,7 +78,7 @@ class Movie
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(string|null $title): static
     {
         $this->title = $title;
 
@@ -76,7 +90,7 @@ class Movie
         return $this->plot;
     }
 
-    public function setPlot(string $plot): static
+    public function setPlot(string|null $plot): static
     {
         $this->plot = $plot;
 
@@ -88,7 +102,7 @@ class Movie
         return $this->releasedAt;
     }
 
-    public function setReleasedAt(\DateTimeImmutable $releasedAt): static
+    public function setReleasedAt(\DateTimeImmutable|null $releasedAt): static
     {
         $this->releasedAt = $releasedAt;
 
@@ -100,7 +114,7 @@ class Movie
         return $this->poster;
     }
 
-    public function setPoster(string $poster): static
+    public function setPoster(string|null $poster): static
     {
         $this->poster = $poster;
 
