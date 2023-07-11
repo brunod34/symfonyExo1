@@ -30,7 +30,7 @@ class MovieController extends AbstractController
         path: '/movies/{slug}',
         name: 'app_movie_details',
         requirements: [
-            'slug' => '\d{4}-\w+(-\w+)*'
+            'slug' => MovieEntity::SLUG_FORMAT,
         ],
         methods: ['GET']
     )]
@@ -52,7 +52,7 @@ class MovieController extends AbstractController
         path: '/movies/{slug}/edit',
         name: 'app_movie_edit',
         requirements: [
-            'slug' => '\d{4}-\w+(-\w+)*'
+            'slug' => MovieEntity::SLUG_FORMAT,
         ],
         methods: ['GET']
     )]
