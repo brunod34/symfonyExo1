@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MovieRepository;
+use App\Validator\Constraints\ValidMoviePoster;
+use App\Validator\Constraints\ValidMovieSlug;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -24,7 +26,7 @@ class Movie
     private ?int $id = null;
 
     #[Assert\NotBlank()]
-    #[Assert\Regex('#'.self::SLUG_FORMAT.'#')]
+    #[ValidMovieSlug]
     #[Assert\Length(min: 8, max: 255)]
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
@@ -44,7 +46,8 @@ class Movie
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $releasedAt = null;
 
-    #[Assert\NotBlank()]
+    #[Assert\NotNull()]
+    #[ValidMoviePoster()]
     #[ORM\Column(length: 255)]
     private ?string $poster = null;
 

@@ -19,7 +19,11 @@
                 {% for movie in movies %}
                     <div class="col">
                         <div class="card shadow-sm">
-                            <img src="{{ asset('build/images/movies/' ~ movie.poster) }}">
+                            {% set moviePoster = movie.poster %}
+                            {% if movie.isRemotePoster is same as(false) %}
+                                {% set moviePoster = asset('build/images/movies/' ~ movie.poster) %}
+                            {% endif %}
+                            <img src="{{ moviePoster }}">
                             <div class="card-body">
                                 <p class="card-text">
                                     {% for genre in movie.genres %}
