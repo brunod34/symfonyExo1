@@ -17,6 +17,7 @@ Install
 $ symfony composer install
 $ yarn install
 $ yarn dev
+$ ./fixtures.sh
 $ symfony serve -d
 ```
 
