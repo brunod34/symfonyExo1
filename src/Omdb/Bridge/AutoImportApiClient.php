@@ -21,8 +21,13 @@ final class AutoImportApiClient implements ApiClientInterface
     {
         $movieModel = $this->client->getById($imdbID);
 
-        $this->importer->import($movieModel);
+//        $this->importer->import($movieModel, false);
 
         return $movieModel;
+    }
+
+    public function searchByTitle(string $title): array
+    {
+        return $this->client->searchByTitle($title);
     }
 }

@@ -22,7 +22,7 @@ final class DatabaseImporter
     ) {
     }
 
-    public function import(MovieOmdbModel $movieOmdb): MovieEntity
+    public function import(MovieOmdbModel $movieOmdb, bool $flush = false): MovieEntity
     {
         $slug = $this->slugger->slug("{$movieOmdb->Year}-{$movieOmdb->Title}")->toString();
 
@@ -39,7 +39,7 @@ final class DatabaseImporter
         }
 
         try {
-            $this->movieRepository->save($movieEntity, true);
+            $this->movieRepository->save($movieEntity, $flush);
         } catch (UniqueConstraintViolationException) {
             return $this->movieRepository->getBySlug($slug);
         }
