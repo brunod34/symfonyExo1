@@ -7,7 +7,6 @@ use App\Form\MovieType;
 use App\Model\Movie;
 use App\Omdb\Client\ApiClientInterface;
 use App\Repository\MovieRepository;
-use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MovieController extends AbstractController
 {
     public function __construct(
+        private readonly MovieRepository $movieRepository,
         private readonly ApiClientInterface $omdbApiClient,
     ) {
     }
@@ -25,9 +25,9 @@ class MovieController extends AbstractController
         name: 'app_movie_list',
         methods: ['GET']
     )]
-    public function list(MovieRepository $movieRepository): Response
+    public function list(): Response
     {
-        $movies = Movie::fromEntities($movieRepository->listAll());
+        $movies = Movie::fromEntities($this->movieRepository->listAll());
 
         return $this->render('movie/list.html.twig', [
             'movies' => $movies,
@@ -42,9 +42,9 @@ class MovieController extends AbstractController
         ],
         methods: ['GET']
     )]
-    public function detailsFromDatabase(MovieRepository $movieRepository, string $slug): Response
+    public function detailsFromDatabase(string $slug): Response
     {
-        $movie = Movie::fromEntity($movieRepository->getBySlug($slug));
+        $movie = Movie::fromEntity($this->movieRepository->getBySlug($slug));
 
         return $this->render('movie/details.html.twig', [
             'movie' => $movie,
@@ -82,18 +82,18 @@ class MovieController extends AbstractController
         ],
         methods: ['GET', 'POST']
     )]
-    public function newOrEdit(Request $request, MovieRepository $movieRepository, string|null $slug = null): Response
+    public function newOrEdit(Request $request, string|null $slug = null): Response
     {
         $movieEntity = new MovieEntity();
         if (null !== $slug) {
-            $movieEntity = $movieRepository->getBySlug($slug);
+            $movieEntity = $this->movieRepository->getBySlug($slug);
         }
 
         $movieForm = $this->createForm(MovieType::class, $movieEntity);
         $movieForm->handleRequest($request);
 
         if ($movieForm->isSubmitted() && $movieForm->isValid()) {
-            $movieRepository->save($movieEntity, true);
+            $this->movieRepository->save($movieEntity, true);
 
             return $this->redirectToRoute('app_movie_details', ['slug' => $movieEntity->getSlug()]);
         }

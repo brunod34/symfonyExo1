@@ -2,17 +2,21 @@
 
 namespace App\Controller;
 
-use App\Model\Movie;
 use App\Repository\MovieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class NavBarController extends AbstractController
 {
-    public function main(MovieRepository $movieRepository): Response
+    public function __construct(
+        private readonly MovieRepository $movieRepository,
+    ) {
+    }
+
+    public function main(): Response
     {
         return $this->render('_navbar.html.twig', [
-            'movies' => $movieRepository->listBySlugAndTitle(),
+            'movies' => $this->movieRepository->listBySlugAndTitle(),
         ]);
     }
 }

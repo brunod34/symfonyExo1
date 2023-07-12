@@ -12,7 +12,12 @@ use function file_exists;
 
 final class MoviePosterExistsValidator extends ConstraintValidator
 {
-    public function validate(mixed $value, Constraint $constraint)
+    public function __construct(
+        private readonly string $assetsImagesMoviePath,
+    ) {
+    }
+
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof MoviePosterExists) {
             throw new UnexpectedTypeException($constraint, MoviePosterExists::class);
@@ -28,7 +33,7 @@ final class MoviePosterExistsValidator extends ConstraintValidator
 
         $stringValue = (string) $value;
 
-        $filePath = __DIR__ . '/../../../assets/images/movies/' . $stringValue;
+        $filePath = "{$this->assetsImagesMoviePath}{$stringValue}";
 
         if (file_exists($filePath)) {
             return;
