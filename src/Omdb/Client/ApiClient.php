@@ -11,15 +11,15 @@ use Throwable;
 final class ApiClient implements ApiClientInterface
 {
     public function __construct(
-        private readonly HttpClientInterface $client,
+        private readonly HttpClientInterface $omdbApiClient,
     ) {
     }
 
     public function getById(string $imdbID): Movie
     {
-        $response = $this->client->request(
+        $response = $this->omdbApiClient->request(
             'GET',
-            "http://www.omdbapi.com/?apikey=c3466687&i={$imdbID}"
+            "/?i={$imdbID}"
         );
 
         try {
