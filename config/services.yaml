@@ -16,6 +16,7 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
+            - '../src/DataFixtures/'
             - '../src/Entity/'
             - '../src/Model/'
             - '../src/Omdb/'
@@ -33,3 +34,8 @@ services:
         resource: '../src/Validator/Constraints/**/*Validator.php'
 
     App\Omdb\Client\ApiClientInterface: '@App\Omdb\Client\ApiClient'
+
+when@dev:
+    services:
+        App\DataFixtures\:
+            resource: '../src/DataFixtures/'
