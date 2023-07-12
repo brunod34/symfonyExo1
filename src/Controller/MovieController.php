@@ -6,6 +6,7 @@ use App\Entity\Movie as MovieEntity;
 use App\Form\MovieType;
 use App\Model\Movie;
 use App\Repository\MovieRepository;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,10 +36,25 @@ class MovieController extends AbstractController
         ],
         methods: ['GET']
     )]
-    public function details(MovieRepository $movieRepository, string $slug): Response
+    public function detailsFromDatabase(MovieRepository $movieRepository, string $slug): Response
     {
         $movie = Movie::fromEntity($movieRepository->getBySlug($slug));
 
+        return $this->render('movie/details.html.twig', [
+            'movie' => $movie,
+        ]);
+    }
+
+    #[Route(
+        path: '/movies/{imdbID}',
+        name: 'app_movie_details_omdb',
+        requirements: [
+            'imdbID' => 'tt.+',
+        ],
+        methods: ['GET']
+    )]
+    public function detailsFromOmdb(MovieRepository $movieRepository, string $imdbID): Response
+    {
         return $this->render('movie/details.html.twig', [
             'movie' => $movie,
         ]);
