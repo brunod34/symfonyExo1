@@ -6,8 +6,10 @@ namespace App\Model;
 
 use App\Entity\Genre as GenreEntity;
 use App\Entity\Movie as MovieEntity;
+use App\Omdb\Client\Model\Movie as MovieOmdbModel;
 use DateTimeImmutable;
 use function array_map;
+use function explode;
 use function str_starts_with;
 
 final class Movie
@@ -58,5 +60,17 @@ final class Movie
     public static function fromEntities(array $movieEntities): array
     {
         return array_map(self::fromEntity(...), $movieEntities);
+    }
+
+    public static function fromOmdbModel(MovieOmdbModel $movieOmdbModel): self
+    {
+        return new self(
+            slug: 'todo',
+            title: $movieOmdbModel->Title,
+            plot: $movieOmdbModel->Plot,
+            poster: $movieOmdbModel->Poster,
+            releasedAt: new DateTimeImmutable($movieOmdbModel->Released),
+            genres: explode(', ', $movieOmdbModel->Genre),
+        );
     }
 }
