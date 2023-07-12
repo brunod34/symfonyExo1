@@ -3,6 +3,7 @@
 namespace App\Omdb\Bridge\Command;
 
 use App\Entity\Movie as MovieEntity;
+use App\Omdb\Bridge\AutoImportConfig;
 use App\Omdb\Bridge\DatabaseImporter;
 use App\Omdb\Client\ApiClientInterface;
 use App\Omdb\Client\Model\SearchResult;
@@ -34,6 +35,7 @@ class MoviesImportCommand extends Command
         private readonly EntityManagerInterface $entityManager,
         private readonly ApiClientInterface $omdbApiClient,
         private readonly DatabaseImporter $omdbDatabaseImporter,
+        private readonly AutoImportConfig $autoImportConfig,
     ) {
         parent::__construct(null);
     }
@@ -61,6 +63,8 @@ class MoviesImportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->autoImportConfig->skip();
+
         $io = new SymfonyStyle($input, $output);
         $io->title('Import movies from OMDB');
 
@@ -129,6 +133,8 @@ class MoviesImportCommand extends Command
                 return $rows;
             }, []));
         }
+
+        $this->autoImportConfig->restore();
 
         return Command::SUCCESS;
     }

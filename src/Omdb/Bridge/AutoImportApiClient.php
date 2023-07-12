@@ -14,6 +14,7 @@ final class AutoImportApiClient implements ApiClientInterface
     public function __construct(
         private readonly ApiClientInterface $client,
         private readonly DatabaseImporter $importer,
+        private readonly AutoImportConfig $config,
     ) {
     }
 
@@ -21,7 +22,9 @@ final class AutoImportApiClient implements ApiClientInterface
     {
         $movieModel = $this->client->getById($imdbID);
 
-//        $this->importer->import($movieModel, false);
+        if ($this->config->getValue() === true) {
+            $this->importer->import($movieModel, true);
+        }
 
         return $movieModel;
     }

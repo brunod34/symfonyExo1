@@ -26,6 +26,8 @@ services:
         resource: '../src/Omdb/'
         exclude:
             - '../src/Omdb/Client/Model/'
+        bind:
+            bool $default: '%env(bool:AUTO_IMPORT_ENABLED)%'
 
     App\Validator\Constraints\:
         resource: '../src/Validator/Constraints/**/*Validator.php'
