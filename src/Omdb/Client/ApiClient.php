@@ -17,10 +17,12 @@ final class ApiClient implements ApiClientInterface
 
     public function getById(string $imdbID): Movie
     {
-        $response = $this->omdbApiClient->request(
-            'GET',
-            "/?i={$imdbID}"
-        );
+        $response = $this->omdbApiClient->request('GET', '/', [
+            'query' => [
+                'i' => $imdbID,
+                'plot' => 'full',
+            ],
+        ]);
 
         try {
             /** @var array{Title: string, Year: string, Rated: string, Released: string, Genre: string, Plot: string, Poster: string, imdbID: string, Type: string, Response: string} $movieRaw */
