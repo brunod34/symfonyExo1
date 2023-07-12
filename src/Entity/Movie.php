@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Model\Rating;
 use App\Repository\MovieRepository;
 use App\Validator\Constraints\ValidMoviePoster;
 use App\Validator\Constraints\ValidMovieSlug;
@@ -55,8 +56,8 @@ class Movie
     #[ORM\ManyToMany(targetEntity: Genre::class, inversedBy: 'movies')]
     private Collection $genres;
 
-    #[ORM\Column(length: 8)]
-    private ?string $rated = null;
+    #[ORM\Column(length: 8, enumType: Rating::class, options: ['default' => 'G'])]
+    private ?Rating $rated = Rating::GeneralAudiences;
 
     public function __construct()
     {
@@ -152,12 +153,12 @@ class Movie
         return $this;
     }
 
-    public function getRated(): ?string
+    public function getRated(): Rating|null
     {
         return $this->rated;
     }
 
-    public function setRated(string $rated): static
+    public function setRated(Rating|null $rated): static
     {
         $this->rated = $rated;
 
