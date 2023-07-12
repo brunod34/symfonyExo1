@@ -6,20 +6,26 @@
 parameters:
 
 services:
-    # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autowire: true
+        autoconfigure: true
         bind:
             string $assetsImagesMoviePath: '%kernel.project_dir%/assets/images/movies/'
 
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
+            - '../src/Model/'
+            - '../src/Omdb/'
+            - '../src/Validator/Constraints/'
             - '../src/Kernel.php'
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+
+    App\Omdb\:
+        resource: '../src/Omdb/'
+        exclude:
+            - '../src/Omdb/Client/Model/'
+
+    App\Validator\Constraints\:
+        resource: '../src/Validator/Constraints/**/*Validator.php'
