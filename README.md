@@ -32,6 +32,7 @@ Running the tests
 
 ```bash
 $ symfony php ./bin/phpunit --testdox
+$ symfony php ./vendor/bin/phpstan
 ```
 
 Log in

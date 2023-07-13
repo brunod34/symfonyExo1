@@ -1,0 +1,12 @@
+parameters:
+    type_coverage:
+        return_type: 100
+        param_type: 100
+        property_type: 100
+    level: max
+    paths:
+        - bin/
+        - config/
+        - public/
+        - src/
+        - tests/

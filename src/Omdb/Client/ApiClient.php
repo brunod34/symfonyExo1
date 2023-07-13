@@ -61,7 +61,6 @@ final class ApiClient implements ApiClientInterface
         ]);
 
         try {
-            /** @var array{Search: list<array{Title: string, Year: string, imdbID: string, Type: string, Poster: string}>, totalResults: string} $result */
             $result = $response->toArray(true);
         } catch (Throwable $throwable) {
             throw NoResult::searchingForTitle($title, $throwable);
