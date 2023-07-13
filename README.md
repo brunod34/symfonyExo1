@@ -33,3 +33,9 @@ Running the tests
 ```bash
 $ symfony php ./bin/phpunit --testdox
 ```
+
+Log in
+======
+
+1. `adrien`/`adrien` [admin]
+2. `max`/`max`
