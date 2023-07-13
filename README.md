@@ -38,5 +38,7 @@ $ symfony php ./vendor/bin/phpstan
 Log in
 ======
 
-1. `adrien`/`adrien` [admin]
-2. `max`/`max`
+1. `adrien`/`adrien` [admin] (age: 35)
+2. `max`/`max` (age: 14)
+3. `lou`/`lou` (age: 5)
+4. `john`/`john` (age: N/A)
