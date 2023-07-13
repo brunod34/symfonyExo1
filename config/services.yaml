@@ -37,5 +37,9 @@ services:
 
 when@dev:
     services:
+        _defaults:
+            autowire: true
+            autoconfigure: true
+
         App\DataFixtures\:
             resource: '../src/DataFixtures/'
