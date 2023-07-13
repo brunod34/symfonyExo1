@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Movie as MovieEntity;
+use App\EventSubscriber\MovieAddedEvent;
 use App\Form\MovieType;
 use App\Model\Movie;
 use App\Omdb\Client\ApiClientInterface;
 use App\Repository\MovieRepository;
 use App\Security\Voter\MovieMinAgeRequiredVoter;
+use Psr\Clock\ClockInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +21,8 @@ class MovieController extends AbstractController
     public function __construct(
         private readonly MovieRepository $movieRepository,
         private readonly ApiClientInterface $omdbApiClient,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ClockInterface $clock,
     ) {
     }
 
@@ -99,6 +104,16 @@ class MovieController extends AbstractController
 
         if ($movieForm->isSubmitted() && $movieForm->isValid()) {
             $this->movieRepository->save($movieEntity, true);
+
+            if (null === $slug) {
+                $this->eventDispatcher->dispatch(
+                    new MovieAddedEvent(
+                        $this->clock->now(),
+                        $movieEntity,
+                        $this->getUser(),
+                    )
+                );
+            }
 
             return $this->redirectToRoute('app_movie_details', ['slug' => $movieEntity->getSlug()]);
         }
