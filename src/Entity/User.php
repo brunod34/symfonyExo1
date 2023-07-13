@@ -101,7 +101,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getBirthdate(): ?\DateTimeImmutable
+    public function hasBirthdate(): bool
+    {
+        return null !== $this->birthdate;
+    }
+
+    public function getBirthdate(): \DateTimeImmutable
     {
         return $this->birthdate;
     }
