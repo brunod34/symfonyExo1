@@ -22,7 +22,7 @@ class UserFixtures extends Fixture
         [
             'username' => 'max',
             'password' => 'max',
-            'is_admin' => false,
+            'is_admin' => true,
             'birthdate' => '5 April',
             'age' => 14,
         ],
