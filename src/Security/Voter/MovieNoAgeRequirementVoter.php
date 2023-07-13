@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Security\Voter;
+
+use App\Model\Movie;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+
+final class MovieNoAgeRequirementVoter implements VoterInterface
+{
+    public function vote(TokenInterface $token, mixed $subject, array $attributes): int
+    {
+        if (!$subject instanceof Movie) {
+            return self::ACCESS_ABSTAIN;
+        }
+
+        if (!in_array(MovieMinAgeRequiredVoter::VIEW_DETAILS, $attributes, true)) {
+            return self::ACCESS_ABSTAIN;
+        }
+
+        return $subject->rated->minAgeRequired() === 0 ? self::ACCESS_GRANTED : self::ACCESS_ABSTAIN;
+    }
+}
