@@ -3,8 +3,11 @@
 {% block title 'Result of search' %}
 
 {% block main %}
-    <h2 class="fw-light">Result for : {{search}}</h2>
-
+{% if movies|length > 0 %}
+    <h2 class="fw-light">Result for "{{search}}" ({{ movies|length  }})</h2>
+{% else %}
+    <h2 class="fw-light">No Result for "{{search}}"</h2>
+{% endif %}
 	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
 		{% for movie in movies %} 
 			<div class="col">

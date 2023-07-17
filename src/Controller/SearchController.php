@@ -19,7 +19,9 @@ class SearchController extends AbstractController
 
     public function main(): Response
     {
-        return $this->render('search/search.html.twig', []);
+        return $this->render('search/search.html.twig', [
+
+        ]);
     }
 
 
@@ -38,6 +40,7 @@ class SearchController extends AbstractController
    
 
         return $this->render('search/result.html.twig', [
+
                 'movies' => $movies,   
                 'search' => $search ,       
         ]);
