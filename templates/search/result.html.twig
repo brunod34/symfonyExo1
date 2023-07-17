@@ -1,9 +1,43 @@
 {% extends 'base.html.twig' %}
 
-
+{% block title 'Result of search' %}
 
 {% block main %}
-   
-resultat de ta Recherche
+    <h2 class="fw-light">Result for : {{search}}</h2>
+
+	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
+		{% for movie in movies %} 
+			<div class="col">
+				<div class="card shadow-sm">
+					{% set moviePoster = movie.poster %}
+					{% if movie.isRemotePoster is same as(false) %}
+						{% set moviePoster = asset('build/images/movies/' ~ movie.poster) %}
+					{% endif %}
+					<img src="{{ moviePoster }}">
+					<div class="card-body">
+						<p class="card-text">
+							<span class="badge bg-primary">{{ movie.rated.value }}</span>
+
+							{% for genre in movie.genres %}
+								<span class="badge bg-dark">{{ genre }}</span>
+							{% endfor %}
+							<h3>
+								<a href="{{ path('app_movie_edit', {'slug': movie.slug}) }}">
+									<i class="fa fa-edit"></i>
+								</a>
+								{{ movie.title|title }}</h3>
+							{{ movie.plot|u.truncate(300, '...', false) }}
+						</p>
+						<a href="{{ path('app_movie_details', {'slug': movie.slug}) }}">Voir plus</a>
+						<div class="d-flex justify-content-between align-items-center">
+							<small class="text-muted">{{ movie.year }}</small>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+
 
 {% endblock main %}
+

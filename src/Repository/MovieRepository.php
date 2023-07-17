@@ -91,7 +91,7 @@ class MovieRepository extends ServiceEntityRepository
    {
        return $this->createQueryBuilder('movie')
            ->andWhere('movie.title like :val')
-           ->setParameter('val', $search)
+           ->setParameter('val', '%'.$search.'%')
            ->getQuery()
            ->getResult();
        ;

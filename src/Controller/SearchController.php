@@ -30,13 +30,17 @@ class SearchController extends AbstractController
     )]
     public function search(Request $request)
     {
-        // $movies = Movie::fromEntities(
-        //     $this->movieRepository->findByTitle('sens'));
+        $search = $request->query->get('q');
 
+        $movies = Movie::fromEntities(
+            $this->movieRepository->findByTitle($search));
+        //dd($movies);
    
 
         return $this->render('search/result.html.twig', [
-                'movies' => '$movies',                
+                'movies' => $movies,   
+                'search' => $search ,       
         ]);
+
     }
 }
