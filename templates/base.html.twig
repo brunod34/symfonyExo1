@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title 'My movie gallery' %}</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-    {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-    {% endblock stylesheets %}
+	<head>
+		<meta charset="UTF-8">
+		<title>{% block title 'My movie gallery' %}</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock stylesheets %}
 
-    {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-    {% endblock javascripts %}
-</head>
-<body>
-{% block body %}
-    <main class="container {% block mainClass '' %}">
-        {% block navbar %}
-            {{ render(controller('App\\Controller\\NavBarController::main')) }}
-        {% endblock navbar %}
-        {% block main %}{% endblock main %}
-    </main>
-{% endblock body %}
-</body>
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock javascripts %}
+	</head>
+	<body>
+		{% block body %}
+			<main class="container {% block mainClass '' %}">
+				{% block navbar %}
+					{{ render(controller('App\\Controller\\NavBarController::main')) }}
+				{% endblock navbar %}
+				{% block search %}
+                    {{ render(controller('App\\Controller\\SearchController::main')) }}
+                {% endblock search %}
+				{% block main %}{% endblock main %}
+			</main>
+		{% endblock body %}
+	</body>
 </html>
+

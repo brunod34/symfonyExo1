@@ -54,6 +54,7 @@ class MovieRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    
     /**
      * @return list<array{title: string, slug: string}>
      */
@@ -82,6 +83,19 @@ class MovieRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getSingleResult();
     }
+
+   /**
+    * @return list<Movie>
+    */
+   public function findByTitle($search): array
+   {
+       return $this->createQueryBuilder('movie')
+           ->andWhere('movie.title like :val')
+           ->setParameter('val', $search)
+           ->getQuery()
+           ->getResult();
+       ;
+   }
 
 //    /**
 //     * @return Movie[] Returns an array of Movie objects
