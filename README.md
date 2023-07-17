@@ -1,5 +1,5 @@
 Requirements
-============
+=============
 
 1. [symfony-cli](https://symfony.com/download)
 2. PHP >= 8.1
