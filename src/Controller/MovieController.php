@@ -68,7 +68,7 @@ class MovieController extends AbstractController
         methods: ['GET']
     )]
     public function detailsFromOmdb(string $imdbID): Response
-    {
+    {   
         $omdbMovieModel = $this->omdbApiClient->getById($imdbID);
         $movie = Movie::fromOmdbModel($omdbMovieModel);
 
